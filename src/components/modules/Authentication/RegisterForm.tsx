@@ -16,10 +16,10 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const registerSchema = z.object({
-  name: z.string().min(2).max(50),
+  name: z.string().min(3, { error: "Name is too short" }).max(50),
   email: z.email(),
-  password: z.string().min(8),
-  confirmPassword: z.string().min(8),
+  password: z.string().min(8, { error: "Password is too short" }),
+  confirmPassword: z.string().min(8, { error: "Password is too short" }),
 });
 
 export function RegisterForm({
@@ -79,7 +79,11 @@ export function RegisterForm({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="john.doe@company.com" {...field} />
+                    <Input
+                      placeholder="john.doe@company.com"
+                      type="email"
+                      {...field}
+                    />
                   </FormControl>
                   <FormDescription className="sr-only">
                     This is your public display name.
@@ -95,7 +99,7 @@ export function RegisterForm({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="********" {...field} />
+                    <Input placeholder="********" type="password" {...field} />
                   </FormControl>
                   <FormDescription className="sr-only">
                     This is your public display name.
@@ -111,7 +115,7 @@ export function RegisterForm({
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="********" {...field} />
+                    <Input placeholder="********" type="password" {...field} />
                   </FormControl>
                   <FormDescription className="sr-only">
                     This is your public display name.
@@ -120,7 +124,9 @@ export function RegisterForm({
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <Button type="submit" className="w-full">
+              Submit
+            </Button>
           </form>
         </Form>
 
