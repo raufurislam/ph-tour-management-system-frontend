@@ -14,13 +14,19 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Password from "@/components/ui/Password";
 
-const registerSchema = z.object({
-  name: z.string().min(3, { error: "Name is too short" }).max(50),
-  email: z.email(),
-  password: z.string().min(8, { error: "Password is too short" }),
-  confirmPassword: z.string().min(8, { error: "Password is too short" }),
-});
+const registerSchema = z
+  .object({
+    name: z.string().min(3, { error: "Name is too short" }).max(50),
+    email: z.email(),
+    password: z.string().min(8, { error: "Password is too short" }),
+    confirmPassword: z.string().min(8, { error: "Password is too short" }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Password do not match",
+    path: ["confirmPassword"],
+  });
 
 export function RegisterForm({
   className,
@@ -77,7 +83,7 @@ export function RegisterForm({
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="john.doe@company.com"
@@ -97,9 +103,9 @@ export function RegisterForm({
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="********" type="password" {...field} />
+                    <Password {...field} />
                   </FormControl>
                   <FormDescription className="sr-only">
                     This is your public display name.
@@ -113,9 +119,9 @@ export function RegisterForm({
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="********" type="password" {...field} />
+                    <Password {...field} />
                   </FormControl>
                   <FormDescription className="sr-only">
                     This is your public display name.
