@@ -2,15 +2,16 @@ import Logo from "@/assets/icons/Logo";
 
 export default function Footer() {
   return (
-    <footer>
-      <div className="mx-auto container space-y-8 px-4 py-16">
+    <footer className="border-t">
+      <div className="mx-auto container space-y-8 px-4 py-16 lg:space-y-16">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
-            <div className="text-foreground">
+            <div className="flex items-center gap-3">
               <Logo />
+              <p className="text-foreground font-medium">Ph Tour</p>
             </div>
 
-            <p className="mt-4 max-w-xs text-muted-foreground/80">
+            <p className="mt-4 max-w-xs text-muted-foreground">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse non
               cupiditate quae nam molestias.
             </p>
@@ -21,7 +22,7 @@ export default function Footer() {
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  className="text-gray-700 transition hover:opacity-75"
+                  className="text-foreground/80 transition hover:text-foreground"
                 >
                   <span className="sr-only">Facebook</span>
 
@@ -45,7 +46,7 @@ export default function Footer() {
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  className="text-gray-700 transition hover:opacity-75"
+                  className="text-foreground/80 transition hover:text-foreground"
                 >
                   <span className="sr-only">Instagram</span>
 
@@ -69,7 +70,7 @@ export default function Footer() {
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  className="text-gray-700 transition hover:opacity-75"
+                  className="text-foreground/80 transition hover:text-foreground"
                 >
                   <span className="sr-only">Twitter</span>
 
@@ -89,7 +90,7 @@ export default function Footer() {
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  className="text-gray-700 transition hover:opacity-75"
+                  className="text-foreground/80 transition hover:text-foreground"
                 >
                   <span className="sr-only">GitHub</span>
 
@@ -113,7 +114,7 @@ export default function Footer() {
                   href="#"
                   rel="noreferrer"
                   target="_blank"
-                  className="text-gray-700 transition hover:opacity-75"
+                  className="text-foreground/80 transition hover:text-foreground"
                 >
                   <span className="sr-only">Dribbble</span>
 
@@ -136,13 +137,13 @@ export default function Footer() {
 
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-4">
             <div>
-              <p className="font-medium text-gray-900">Services</p>
+              <p className="font-medium text-foreground/90">Services</p>
 
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     {" "}
                     1on1 Coaching{" "}
@@ -152,7 +153,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     {" "}
                     Company Review{" "}
@@ -162,7 +163,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     {" "}
                     Accounts Review{" "}
@@ -172,7 +173,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     {" "}
                     HR Consulting{" "}
@@ -182,7 +183,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     {" "}
                     SEO Optimisation{" "}
@@ -192,13 +193,13 @@ export default function Footer() {
             </div>
 
             <div>
-              <p className="font-medium text-gray-900">Company</p>
+              <p className="font-medium text-foreground/90">Company</p>
 
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     {" "}
                     About{" "}
@@ -208,7 +209,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     {" "}
                     Meet the Team{" "}
@@ -218,7 +219,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     {" "}
                     Accounts Review{" "}
@@ -228,13 +229,13 @@ export default function Footer() {
             </div>
 
             <div>
-              <p className="font-medium text-gray-900">Helpful Links</p>
+              <p className="font-medium text-foreground/90">Helpful Links</p>
 
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     {" "}
                     Contact{" "}
@@ -244,7 +245,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     {" "}
                     FAQs{" "}
@@ -254,7 +255,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     {" "}
                     Live Chat{" "}
@@ -264,13 +265,13 @@ export default function Footer() {
             </div>
 
             <div>
-              <p className="font-medium text-gray-900">Legal</p>
+              <p className="font-medium text-foreground/90">Legal</p>
 
               <ul className="mt-6 space-y-4 text-sm">
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     {" "}
                     Accessibility{" "}
@@ -280,7 +281,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     {" "}
                     Returns Policy{" "}
@@ -290,7 +291,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     {" "}
                     Refund Policy{" "}
@@ -300,7 +301,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-700 transition hover:opacity-75"
+                    className="text-foreground/90 transition hover:text-foreground/60"
                   >
                     Hiring-3 Statistics
                   </a>
@@ -310,7 +311,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           &copy; 2022. Company Name. All rights reserved.
         </p>
       </div>
