@@ -15,22 +15,28 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-const formSchema = z.object({
+const registerSchema = z.object({
   name: z.string().min(2).max(50),
+  email: z.email(),
+  password: z.string().min(8),
+  confirmPassword: z.string().min(8),
 });
 
 export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"form">) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: z.infer<typeof registerSchema>) => {
     console.log(data);
   };
 
@@ -58,6 +64,54 @@ export function RegisterForm({
                   <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input placeholder="John Doe" {...field} />
+                  </FormControl>
+                  <FormDescription className="sr-only">
+                    This is your public display name.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="john.doe@company.com" {...field} />
+                  </FormControl>
+                  <FormDescription className="sr-only">
+                    This is your public display name.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="********" {...field} />
+                  </FormControl>
+                  <FormDescription className="sr-only">
+                    This is your public display name.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="********" {...field} />
                   </FormControl>
                   <FormDescription className="sr-only">
                     This is your public display name.
