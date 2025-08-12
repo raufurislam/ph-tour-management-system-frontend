@@ -1,10 +1,10 @@
-import { Button } from "./components/ui/button";
+import { Outlet } from "react-router";
 
 function App() {
   return (
     <>
-      <h1>Lorem ipsum dolor sit amet.</h1>
-      <Button>Click me</Button>
+      <h1>This is app</h1>
+      <Outlet></Outlet>
     </>
   );
 }
