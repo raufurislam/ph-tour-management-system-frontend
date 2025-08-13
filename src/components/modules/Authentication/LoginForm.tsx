@@ -12,7 +12,8 @@ import { Input } from "@/components/ui/input";
 import Password from "@/components/ui/Password";
 import { cn } from "@/lib/utils";
 import { useLoginMutation } from "@/redux/features/auth/auth.api";
-import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
+import type { ILogin } from "@/types";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 
@@ -21,9 +22,10 @@ export function LoginForm({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   const navigate = useNavigate();
-  const form = useForm();
+  const form = useForm<ILogin>();
   const [login] = useLoginMutation();
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+
+  const onSubmit = async (data: ILogin) => {
     try {
       const res = await login(data).unwrap();
       console.log(res);
