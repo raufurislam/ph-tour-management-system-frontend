@@ -11,6 +11,7 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -27,7 +28,7 @@ import {
 } from "@/redux/features/auth/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dot } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import { toast } from "sonner";
@@ -48,6 +49,7 @@ export default function Verify() {
   const [confirmed, setConfirmed] = useState(false);
   const [sendOtp] = useSendOtpMutation();
   const [verifyOtp] = useVerifyOtpMutation();
+  const [timer, setTimer] = useState(5);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -57,18 +59,19 @@ export default function Verify() {
   });
 
   const handleSendOtp = async () => {
-    const toastId = toast.loading("Sending OTP");
+    // const toastId = toast.loading("Sending OTP");
 
-    try {
-      const res = await sendOtp({ email: email }).unwrap();
+    setConfirmed(true);
 
-      if (res.success) {
-        toast.success("OTP Sent", { id: toastId });
-        setConfirmed(true);
-      }
-    } catch (err) {
-      console.log(err);
-    }
+    // try {
+    //   const res = await sendOtp({ email: email }).unwrap();
+
+    //   if (res.success) {
+    //     toast.success("OTP Sent", { id: toastId });
+    //   }
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
@@ -95,6 +98,14 @@ export default function Verify() {
   //     navigate("/");
   //   }
   // }, [email]);
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      if (email && confirmed) {
+        setTimer((prev) => prev - 1);
+      }
+    }, 1000);
+  }, [email, confirmed]);
 
   return (
     <div className="grid place-content-center h-screen">
@@ -142,6 +153,10 @@ export default function Verify() {
                           </InputOTPGroup>
                         </InputOTP>
                       </FormControl>
+                      <FormDescription>
+                        <Button variant="link">Resent OTP</Button>
+                        {timer}
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
