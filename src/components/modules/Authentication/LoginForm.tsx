@@ -1,8 +1,4 @@
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Link, useNavigate } from "react-router";
-import { useLoginMutation } from "@/redux/features/auth/auth.api";
 import {
   Form,
   FormControl,
@@ -12,18 +8,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
-import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 import Password from "@/components/ui/Password";
+import { cn } from "@/lib/utils";
+import { useLoginMutation } from "@/redux/features/auth/auth.api";
+import { useForm, type FieldValues, type SubmitHandler } from "react-hook-form";
+import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
 
 export function LoginForm({
   className,
   ...props
-}: React.HtmlHTMLAttributes<HTMLDivElement>) {
+}: React.HTMLAttributes<HTMLDivElement>) {
   const navigate = useNavigate();
   const form = useForm();
   const [login] = useLoginMutation();
-
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const res = await login(data).unwrap();
@@ -67,25 +66,6 @@ export function LoginForm({
                 </FormItem>
               )}
             />
-
-            {/* <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="********"
-                      {...field}
-                      value={field.value || ""}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
 
             <FormField
               control={form.control}
