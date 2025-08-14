@@ -28,7 +28,7 @@ const navigationLinks = [
 
 export default function Navbar() {
   const { data } = useUserInfoQuery(undefined);
-  console.log(data?.data?.email);
+  // console.log(data?.data?.email);
   const [logout] = useLogoutMutation();
   const dispatch = useAppDispatch();
 

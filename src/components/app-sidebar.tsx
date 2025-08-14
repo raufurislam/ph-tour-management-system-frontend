@@ -14,31 +14,11 @@ import {
 } from "@/components/ui/sidebar";
 import Logo from "@/assets/icons/Logo";
 import { Link } from "react-router";
+import { adminSidebarItems } from "@/routes/AdminSidebarItems";
 
 // This is sample data.
 const data = {
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "#",
-      items: [
-        {
-          title: "Analytics",
-          url: "/admin/analytics",
-        },
-      ],
-    },
-    {
-      title: "Tour Management",
-      url: "#",
-      items: [
-        {
-          title: "Add Tour",
-          url: "/admin/add-tour",
-        },
-      ],
-    },
-  ],
+  navMain: adminSidebarItems,
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
