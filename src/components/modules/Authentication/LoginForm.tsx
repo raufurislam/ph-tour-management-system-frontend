@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Password from "@/components/ui/Password";
+import config from "@/config";
 import { cn } from "@/lib/utils";
 import { useLoginMutation } from "@/redux/features/auth/auth.api";
 import type { ILogin } from "@/types";
@@ -29,11 +30,20 @@ export function LoginForm({
     try {
       const res = await login(data).unwrap();
       console.log(res);
+
+      if (res.success) {
+        toast.success("Logged in successfully");
+        navigate("/");
+      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);
 
-      if (err.status === 401) {
+      if (err.data.message === "Password does not match") {
+        toast.error("Invalid credential");
+      }
+
+      if (err.data.message === "User is not verified") {
         toast.error("Your account is not verified");
         navigate("/verify", { state: data.email });
       }
@@ -101,8 +111,10 @@ export function LoginForm({
             Or continue with
           </span>
         </div>
+        {/* http://localhost:5000/api/v1/auth/google */}
 
         <Button
+          onClick={() => window.open(`${config.baseUrl}/auth/google`)}
           type="button"
           variant="outline"
           className="w-full cursor-pointer"
