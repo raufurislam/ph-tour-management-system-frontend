@@ -30,6 +30,11 @@ export function LoginForm({
     try {
       const res = await login(data).unwrap();
       console.log(res);
+
+      if (res.success) {
+        toast.success("Logged in successfully");
+        navigate("/");
+      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error(err);

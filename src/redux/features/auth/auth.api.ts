@@ -9,7 +9,7 @@ import type {
   IVerifyOtp,
 } from "@/types";
 
-const authApi = baseApi.injectEndpoints({
+export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<IResponse<IUser>, ILogin>({
       query: (userInfo) => ({
@@ -24,6 +24,7 @@ const authApi = baseApi.injectEndpoints({
         url: "/auth/logout",
         method: "POST",
       }),
+      invalidatesTags: ["USER"],
     }),
 
     register: builder.mutation<IResponse<IUser>, IRegister>({
@@ -55,6 +56,7 @@ const authApi = baseApi.injectEndpoints({
         url: "/user/me",
         method: "GET",
       }),
+      providesTags: ["USER"],
     }),
   }),
 });
