@@ -1,10 +1,11 @@
-import { AlertCircleIcon, ImageUpIcon, XIcon } from "lucide-react"
+import { AlertCircleIcon, ImageUpIcon, XIcon } from "lucide-react";
 
-import { useFileUpload } from "@/hooks/use-file-upload"
+import { useFileUpload } from "@/hooks/use-file-upload";
+import { useEffect } from "react";
 
-export default function Component() {
-  const maxSizeMB = 5
-  const maxSize = maxSizeMB * 1024 * 1024 // 5MB default
+export default function SingleImageUploader({ onChange }) {
+  const maxSizeMB = 5;
+  const maxSize = maxSizeMB * 1024 * 1024; // 5MB default
 
   const [
     { files, isDragging, errors },
@@ -20,9 +21,19 @@ export default function Component() {
   ] = useFileUpload({
     accept: "image/*",
     maxSize,
-  })
+  });
 
-  const previewUrl = files[0]?.preview || null
+  console.log("Inside image uploader", files);
+
+  useEffect(() => {
+    if (files.length > 0) {
+      onChange(files[0]);
+    } else {
+      onChange(null);
+    }
+  }, [files]);
+
+  const previewUrl = files[0]?.preview || null;
 
   return (
     <div className="flex flex-col gap-2">
@@ -106,5 +117,5 @@ export default function Component() {
         </a>
       </p>
     </div>
-  )
+  );
 }
