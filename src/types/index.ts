@@ -4,6 +4,7 @@ import type { ComponentType } from "react";
 export type { ISendOtp, ILogin, IRegister, IVerifyOtp } from "./auth.type";
 export type { IUser } from "./user.type";
 export type { ITourType, ITourTypeResponse } from "./tour.type";
+export type { IDivisionType, IDivisionTypeResponse } from "./division.type";
 
 export interface IResponse<T> {
   statusCode: number;
