@@ -14,38 +14,25 @@ import {
 } from "@/components/ui/sidebar";
 import Logo from "@/assets/icons/Logo";
 import { Link } from "react-router";
-
-// This is sample data.
-const data = {
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "#",
-      items: [
-        {
-          title: "Analytics",
-          url: "/admin/analytics",
-        },
-      ],
-    },
-    {
-      title: "Tour Management",
-      url: "#",
-      items: [
-        {
-          title: "Add Tour",
-          url: "/admin/add-tour",
-        },
-      ],
-    },
-  ],
-};
+import { getSidebarItems } from "@/utils/getSidebarItems";
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: userData } = useUserInfoQuery(undefined);
+  // console.log(userData);
+
+  // This is sample data.
+  const data = {
+    // navMain: adminSidebarItems,
+    navMain: getSidebarItems(userData?.data?.role),
+  };
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <Logo />
+        <Link to="/">
+          <Logo />
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}

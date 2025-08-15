@@ -1,6 +1,9 @@
+import type { ComponentType } from "react";
+
 // types/index.ts
 export type { ISendOtp, ILogin, IRegister, IVerifyOtp } from "./auth.type";
 export type { IUser } from "./user.type";
+export type { ITourType, ITourTypeResponse } from "./tour.type";
 
 export interface IResponse<T> {
   statusCode: number;
@@ -8,3 +11,14 @@ export interface IResponse<T> {
   message: string;
   data: T;
 }
+
+export interface ISidebarItem {
+  title: string;
+  items: {
+    title: string;
+    url: string;
+    component: ComponentType;
+  }[];
+}
+
+export type TRole = "SUPER_ADMIN" | "ADMIN" | "USER" | "GUILD";
