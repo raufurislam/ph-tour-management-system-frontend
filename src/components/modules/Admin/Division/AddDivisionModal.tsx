@@ -19,12 +19,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useAddDivisionMutation } from "@/redux/features/division/division.api";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export function AddDivisionModal() {
   const [image, setImage] = useState<File | null>();
+  const [addDivision] = useAddDivisionMutation();
+  const [open, setOpen] = useState(false);
 
   console.log("inside add division modal", image);
 
@@ -37,14 +41,30 @@ export function AddDivisionModal() {
   });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = async (data: any) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+    const toastId = toast.loading("Uploading Files. Please wait");
+
+    formData.append("data", JSON.stringify(data));
+    formData.append("file", image as File);
+
+    // console.log(formData.get("data"));
+    // console.log(formData.get("file"));
+
+    try {
+      const res = await addDivision(formData).unwrap();
+      console.log(res);
+      toast.success("Division Added Successfully", { id: toastId });
+      setOpen(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Add Division</Button>
+        <Button>Add Division</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
