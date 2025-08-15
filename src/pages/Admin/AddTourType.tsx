@@ -13,7 +13,7 @@ import { Trash2 } from "lucide-react";
 
 export default function AddTourType() {
   const { data } = useGetTourTypesQuery(undefined);
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className="w-full max-w-7xl mx-auto px-5">
