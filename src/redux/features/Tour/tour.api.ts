@@ -1,10 +1,11 @@
 // auth.api.ts
 import { baseApi } from "@/redux/baseApi";
+import type { IResponse, ITourType, ITourTypeResponse } from "@/types";
 
 export const tourApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // addTourType: builder.mutation<IResponse<IUser>, ILogin>({
-    addTourType: builder.mutation({
+    addTourType: builder.mutation<IResponse<ITourTypeResponse>, ITourType>({
       query: (tourTypeName) => ({
         url: "/tour/create-tour-type",
         method: "POST",

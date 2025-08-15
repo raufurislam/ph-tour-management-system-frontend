@@ -1,3 +1,4 @@
+import React from "react";
 import Logo from "@/assets/icons/Logo";
 import { Button } from "@/components/ui/button";
 import {
@@ -87,7 +88,7 @@ export default function Navbar() {
                   {navigationLinks.map((link, index) => (
                     <NavigationMenuItem key={index} className="w-full">
                       <NavigationMenuLink asChild className="py-1.5">
-                        <Link to={link.href}>{link.label}</Link>
+                        <Link to={link.href}>{link.label} </Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   ))}
@@ -97,14 +98,14 @@ export default function Navbar() {
           </Popover>
           {/* Main nav */}
           <div className="flex items-center gap-6">
-            <Link to="/">
+            <Link to="/" className="text-primary hover:text-primary/90">
               <Logo />
             </Link>
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
-                  <>
+                {/* {navigationLinks.map((link, index) => (
+                  <div>
                     {link.role === "PUBLIC" && (
                       <NavigationMenuItem key={index}>
                         <NavigationMenuLink
@@ -125,17 +126,31 @@ export default function Navbar() {
                         </NavigationMenuLink>
                       </NavigationMenuItem>
                     )}
-                  </>
-                ))}
+                  </div>
+                ))} */}
+
+                {navigationLinks
+                  .filter(
+                    (link) =>
+                      link.role === "PUBLIC" || link.role === data?.data?.role
+                  )
+                  .map((link) => (
+                    <NavigationMenuItem key={`${link.href}-${link.role}`}>
+                      <NavigationMenuLink
+                        asChild
+                        className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                      >
+                        <Link to={link.href}>{link.label}</Link>
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                  ))}
               </NavigationMenuList>
             </NavigationMenu>
           </div>
         </div>
-
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggle />
-
           {data?.data?.email && (
             <Button
               onClick={handleLogout}
@@ -145,7 +160,6 @@ export default function Navbar() {
               Logout
             </Button>
           )}
-
           {!data?.data?.email && (
             <Button asChild className="text-sm">
               <Link to="/login">Login</Link>

@@ -3,6 +3,7 @@ import type { ComponentType } from "react";
 // types/index.ts
 export type { ISendOtp, ILogin, IRegister, IVerifyOtp } from "./auth.type";
 export type { IUser } from "./user.type";
+export type { ITourType, ITourTypeResponse } from "./tour.type";
 
 export interface IResponse<T> {
   statusCode: number;

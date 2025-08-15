@@ -31,8 +31,8 @@ export default function AddTourType() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.data?.map((item: { name: string }) => (
-              <TableRow>
+            {data?.data?.map((item: { name: string }, index: number) => (
+              <TableRow key={index}>
                 {/* <TableCell className="font-medium">INV001</TableCell> */}
                 <TableCell className="font-medium w-full">
                   {item.name}
