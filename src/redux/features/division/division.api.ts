@@ -1,15 +1,15 @@
 // auth.api.ts
 import { baseApi } from "@/redux/baseApi";
+import type { IDivisionTypeResponse, IResponse } from "@/types";
 
 export const divisionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    addDivision: builder.mutation({
+    addDivision: builder.mutation<IResponse<IDivisionTypeResponse>, FormData>({
       query: (divisionData) => ({
         url: "/division/create",
         method: "POST",
         data: divisionData,
       }),
-      invalidatesTags: ["TOUR"],
     }),
 
     getTourTypes: builder.query({

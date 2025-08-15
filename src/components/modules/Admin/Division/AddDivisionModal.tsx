@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAddDivisionMutation } from "@/redux/features/division/division.api";
+import type { IDivisionType } from "@/types";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -32,16 +33,16 @@ export function AddDivisionModal() {
 
   console.log("inside add division modal", image);
 
-  //   const form = useForm<ITourType>();
-  const form = useForm({
+  const form = useForm<IDivisionType>({
     defaultValues: {
       name: "",
       description: "",
+      thumbnail: undefined as unknown as File,
     },
   });
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: IDivisionType) => {
     const formData = new FormData();
     const toastId = toast.loading("Uploading Files. Please wait");
 
