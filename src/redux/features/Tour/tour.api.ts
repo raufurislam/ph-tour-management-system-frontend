@@ -17,7 +17,7 @@ export const tourApi = baseApi.injectEndpoints({
         url: "/tour/tour-types",
         method: "GET",
       }),
-      transformResponse: (response) => response.data.data,
+      transformResponse: (response) => response.data,
     }),
   }),
 });
