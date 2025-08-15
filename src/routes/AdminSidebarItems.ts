@@ -1,6 +1,9 @@
 import AddTour from "@/pages/Admin/AddTour";
-import Analytics from "@/pages/Admin/Analytics";
 import type { ISidebarItem } from "@/types";
+// import Analytics from "./../pages/Admin/Analytics";
+import { lazy } from "react";
+
+const Analytics = lazy(() => import("@/pages/Admin/Analytics"));
 
 export const adminSidebarItems: ISidebarItem[] = [
   {
