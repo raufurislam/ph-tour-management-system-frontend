@@ -10,7 +10,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -38,6 +37,13 @@ export default function AddTour() {
     (item: { _id: string; name: string }) => ({
       value: item._id,
       label: item.name,
+    })
+  );
+
+  const tourTypeOptions = tourTypeData?.data?.map(
+    (tourType: { _id: string; name: string }) => ({
+      value: tourType._id,
+      label: tourType.name,
     })
   );
 
@@ -106,7 +112,7 @@ export default function AddTour() {
                         <SelectContent>
                           {divisionOptions?.map(
                             (item: { label: string; value: string }) => (
-                              <SelectItem value={item.value}>
+                              <SelectItem key={item.value} value={item.value}>
                                 {item.label}
                               </SelectItem>
                             )
@@ -127,27 +133,26 @@ export default function AddTour() {
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
+                        disabled={divisionLoading}
                       >
                         <FormControl>
                           <SelectTrigger className="w-full">
-                            <SelectValue
-                            // placeholder="Select a verified email to display"
-                            />
+                            <SelectValue />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="m@example.com">
-                            m@example.com
-                          </SelectItem>
-                          <SelectItem value="m@google.com">
-                            m@google.com
-                          </SelectItem>
-                          <SelectItem value="m@support.com">
-                            m@support.com
-                          </SelectItem>
+                          {tourTypeOptions?.map(
+                            (option: { value: string; label: string }) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </SelectItem>
+                            )
+                          )}
                         </SelectContent>
                       </Select>
-
                       <FormMessage />
                     </FormItem>
                   )}
