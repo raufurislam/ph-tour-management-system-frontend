@@ -68,6 +68,7 @@ export default function MultipleImageUploader({
                 size="sm"
                 onClick={openFileDialog}
                 disabled={files.length >= maxFiles}
+                type="button"
               >
                 <UploadIcon
                   className="-ms-0.5 size-3.5 opacity-60"
@@ -93,6 +94,7 @@ export default function MultipleImageUploader({
                     size="icon"
                     className="border-background focus-visible:border-background absolute -top-2 -right-2 size-6 rounded-full border-2 shadow-none"
                     aria-label="Remove image"
+                    type="button"
                   >
                     <XIcon className="size-3.5" />
                   </Button>
@@ -112,7 +114,12 @@ export default function MultipleImageUploader({
             <p className="text-muted-foreground text-xs">
               SVG, PNG, JPG or GIF (max. {maxSizeMB}MB)
             </p>
-            <Button variant="outline" className="mt-4" onClick={openFileDialog}>
+            <Button
+              variant="outline"
+              type="button"
+              className="mt-4"
+              onClick={openFileDialog}
+            >
               <UploadIcon className="-ms-1 opacity-60" aria-hidden="true" />
               Select images
             </Button>
