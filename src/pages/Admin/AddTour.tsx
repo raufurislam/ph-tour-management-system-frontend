@@ -34,19 +34,23 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
-import { useGetTourTypesQuery } from "@/redux/features/Tour/tour.api";
+import {
+  useAddTourMutation,
+  useGetTourTypesQuery,
+} from "@/redux/features/Tour/tour.api";
 import { format, formatISO } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useForm, type SubmitHandler, type FieldValues } from "react-hook-form";
 import { useState } from "react";
+import type { FileMetadata } from "@/hooks/use-file-upload";
 
 export default function AddTour() {
-  const [images, setImages] = useState<File[] | []>([]);
-  console.log(images);
+  const [images, setImages] = useState<(File | FileMetadata)[] | []>([]);
 
   const { data: divisionData, isLoading: divisionLoading } =
     useGetDivisionsQuery(undefined);
   const { data: tourTypeData } = useGetTourTypesQuery(undefined);
+  const [addTour] = useAddTourMutation();
 
   const divisionOptions = divisionData?.map(
     (item: { _id: string; name: string }) => ({
@@ -75,7 +79,7 @@ export default function AddTour() {
     },
   });
 
-  const handleSubmit: SubmitHandler<FieldValues> = (data) => {
+  const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
     const tourData = {
       ...data,
       startDate: formatISO(data.startDate),
@@ -83,9 +87,19 @@ export default function AddTour() {
     };
 
     const formData = new FormData();
-    images.forEach((image) => formData.append("files", image));
+
+    formData.append("data", JSON.stringify(tourData));
+
+    images.forEach((image) => formData.append("files", image as File));
 
     console.log(formData.getAll("files"));
+
+    try {
+      const res = await addTour(formData).unwrap();
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
