@@ -38,8 +38,12 @@ import { useGetTourTypesQuery } from "@/redux/features/Tour/tour.api";
 import { format, formatISO } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useForm, type SubmitHandler, type FieldValues } from "react-hook-form";
+import { useState } from "react";
 
 export default function AddTour() {
+  const [images, setImages] = useState<File[] | []>([]);
+  console.log(images);
+
   const { data: divisionData, isLoading: divisionLoading } =
     useGetDivisionsQuery(undefined);
   const { data: tourTypeData } = useGetTourTypesQuery(undefined);
@@ -58,7 +62,6 @@ export default function AddTour() {
     })
   );
 
-  console.log(divisionOptions);
   // console.log(divisionData);
 
   const form = useForm({
@@ -78,7 +81,11 @@ export default function AddTour() {
       startDate: formatISO(data.startDate),
       endDate: formatISO(data.endDate),
     };
-    console.log(tourData);
+
+    const formData = new FormData();
+    images.forEach((image) => formData.append("files", image));
+
+    console.log(formData.getAll("files"));
   };
 
   return (
@@ -289,7 +296,7 @@ export default function AddTour() {
                   )}
                 />
                 <div className="flex-1 mt-5">
-                  <MultipleImageUploader />
+                  <MultipleImageUploader onChange={setImages} />
                 </div>
               </div>
 
