@@ -39,10 +39,16 @@ import {
   useGetTourTypesQuery,
 } from "@/redux/features/Tour/tour.api";
 import { format, formatISO } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { useForm, type SubmitHandler, type FieldValues } from "react-hook-form";
+import { CalendarIcon, Plus } from "lucide-react";
+import {
+  useForm,
+  type SubmitHandler,
+  type FieldValues,
+  useFieldArray,
+} from "react-hook-form";
 import { useState } from "react";
 import type { FileMetadata } from "@/hooks/use-file-upload";
+import { data } from "react-router";
 
 export default function AddTour() {
   const [images, setImages] = useState<(File | FileMetadata)[] | []>([]);
@@ -76,15 +82,26 @@ export default function AddTour() {
       description: "",
       startDate: "",
       endDate: "",
+      included: [{ value: "" }],
     },
   });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "included",
+  });
+
+  console.log(fields);
 
   const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
     const tourData = {
       ...data,
       startDate: formatISO(data.startDate),
       endDate: formatISO(data.endDate),
+      included: data.included.map((item: { value: string }) => item.value),
     };
+
+    console.log(tourData);
 
     const formData = new FormData();
 
@@ -315,6 +332,50 @@ export default function AddTour() {
               </div>
 
               <div className="border-t border-muted w-full "></div>
+
+              <div>
+                <FormLabel>Included</FormLabel>
+
+                <div className="space-y-4 mt-4">
+                  {fields.map((item, index) => (
+                    <div className="flex gap-2" key={item.id}>
+                      <FormField
+                        control={form.control}
+                        name={`included.${index}.value`}
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {/* <Button
+                        onClick={() => removeIncluded(index)}
+                        variant="destructive"
+                        className="!bg-red-700"
+                        size="icon"
+                        type="button"
+                      >
+                        <Trash2 />
+                      </Button> */}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex justify-end mt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    // size="icon"
+                    onClick={() => append({ value: "" })}
+                    className="flex items-center gap-2"
+                  >
+                    <Plus /> Add Included
+                  </Button>
+                </div>
+              </div>
             </form>
           </Form>
         </CardContent>
