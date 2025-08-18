@@ -31,24 +31,43 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import { Textarea } from "@/components/ui/textarea";
+import type { FileMetadata } from "@/hooks/use-file-upload";
 import { cn } from "@/lib/utils";
 import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
 import {
   useAddTourMutation,
   useGetTourTypesQuery,
 } from "@/redux/features/Tour/tour.api";
+import type { IErrorResponse } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { format, formatISO } from "date-fns";
 import { CalendarIcon, Plus, Trash2 } from "lucide-react";
-import {
-  useForm,
-  type SubmitHandler,
-  type FieldValues,
-  useFieldArray,
-} from "react-hook-form";
 import { useState } from "react";
-import type { FileMetadata } from "@/hooks/use-file-upload";
+
+import { useFieldArray, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import z from "zod";
+
+const formSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  location: z.string().min(1, "Location is required"),
+  costFrom: z.string().min(1, "Cost is required"),
+  startDate: z.date({ message: "Start date is required" }),
+  endDate: z.date({ message: "End date is required" }),
+  departureLocation: z.string().min(1, "Departure location is required"),
+  arrivalLocation: z.string().min(1, "Arrival location is required"),
+  included: z.array(z.object({ value: z.string() })),
+  excluded: z.array(z.object({ value: z.string() })),
+  amenities: z.array(z.object({ value: z.string() })),
+  tourPlan: z.array(z.object({ value: z.string() })),
+  maxGuest: z.string().min(1, "Max guest is required"),
+  minAge: z.string().min(1, "Minimum age is required"),
+  division: z.string().min(1, "Division is required"),
+  tourType: z.string().min(1, "Tour type is required"),
+});
 
 export default function AddTour() {
   const [images, setImages] = useState<(File | FileMetadata)[] | []>([]);
@@ -72,18 +91,44 @@ export default function AddTour() {
     })
   );
 
-  // console.log(divisionData);
-
-  const form = useForm({
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
+      title: "Cox's Bazar Beach Adventure",
+      description:
+        "Experience the world's longest natural sea beach with golden sandy shores, crystal clear waters, and breathtaking sunsets. Enjoy beach activities, local seafood, and explore nearby attractions including Himchari National Park and Inani Beach.",
+      location: "Cox's Bazar",
+      costFrom: "15000",
+      startDate: new Date(),
+      endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days later
+      departureLocation: "Dhaka",
+      arrivalLocation: "Cox's Bazar",
+      included: [
+        { value: "Accommodation for 2 nights" },
+        { value: "All meals (breakfast, lunch, dinner)" },
+        { value: "Transportation (AC bus)" },
+        { value: "Professional tour guide" },
+      ],
+      excluded: [
+        { value: "Personal expenses" },
+        { value: "Extra activities not mentioned" },
+        { value: "Travel insurance" },
+      ],
+      amenities: [
+        { value: "Air-conditioned rooms" },
+        { value: "Free WiFi" },
+        { value: "Swimming pool access" },
+        { value: "Beach access" },
+      ],
+      tourPlan: [
+        { value: "Day 1: Arrival and beach exploration" },
+        { value: "Day 2: Himchari National Park visit" },
+        { value: "Day 3: Inani Beach and departure" },
+      ],
+      maxGuest: "25",
+      minAge: "5",
       division: "",
       tourType: "",
-      description: "",
-      startDate: "",
-      endDate: "",
-      included: [{ value: "" }],
-      excluded: [{ value: "" }],
     },
   });
 
@@ -105,17 +150,55 @@ export default function AddTour() {
     name: "excluded",
   });
 
-  console.log(includedFields);
+  const {
+    fields: amenitiesFields,
+    append: appendAmenities,
+    remove: removeAmenities,
+  } = useFieldArray({
+    control: form.control,
+    name: "amenities",
+  });
 
-  const handleSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const toastId = toast.loading("Creating Tour. Please wait a moment...");
+  const {
+    fields: tourPlanFields,
+    append: appendTourPlan,
+    remove: removeTourPlan,
+  } = useFieldArray({
+    control: form.control,
+    name: "tourPlan",
+  });
+
+  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+    const toastId = toast.loading("Creating tour....");
+
+    if (images.length === 0) {
+      toast.error("Please add some images", { id: toastId });
+      return;
+    }
 
     const tourData = {
       ...data,
+      costFrom: Number(data.costFrom),
+      minAge: Number(data.minAge),
+      maxGuest: Number(data.maxGuest),
       startDate: formatISO(data.startDate),
       endDate: formatISO(data.endDate),
-      included: data.included.map((item: { value: string }) => item.value),
-      excluded: data.excluded.map((item: { value: string }) => item.value),
+      included:
+        data.included[0].value === ""
+          ? []
+          : data.included.map((item: { value: string }) => item.value),
+      excluded:
+        data.included[0].value === ""
+          ? []
+          : data.excluded.map((item: { value: string }) => item.value),
+      amenities:
+        data.amenities[0].value === ""
+          ? []
+          : data.amenities.map((item: { value: string }) => item.value),
+      tourPlan:
+        data.tourPlan[0].value === ""
+          ? []
+          : data.tourPlan.map((item: { value: string }) => item.value),
     };
 
     console.log(tourData);
@@ -123,18 +206,22 @@ export default function AddTour() {
     const formData = new FormData();
 
     formData.append("data", JSON.stringify(tourData));
-
     images.forEach((image) => formData.append("files", image as File));
-
-    console.log(formData.getAll("files"));
 
     try {
       const res = await addTour(formData).unwrap();
-      toast.success("A Tour has been successfully created", { id: toastId });
 
-      console.log(res);
-    } catch (err) {
-      console.log(err);
+      if (res.success) {
+        toast.success("Tour created", { id: toastId });
+        form.reset();
+      } else {
+        toast.error("Something went wrong", { id: toastId });
+      }
+    } catch (err: unknown) {
+      console.error(err);
+      toast.error((err as IErrorResponse).message || "Something went wrong", {
+        id: toastId,
+      });
     }
   };
 
@@ -433,6 +520,96 @@ export default function AddTour() {
                     type="button"
                     variant="outline"
                     onClick={() => appendExcluded({ value: "" })}
+                    className="flex items-center gap-2"
+                  >
+                    <Plus /> Add Excluded
+                  </Button>
+                </div>
+              </div>
+
+              <div className="border-t border-muted w-full "></div>
+
+              <div>
+                <FormLabel>Amenities</FormLabel>
+
+                <div className="space-y-4 mt-4">
+                  {amenitiesFields.map((item, index) => (
+                    <div className="flex gap-2" key={item.id}>
+                      <FormField
+                        control={form.control}
+                        name={`amenities.${index}.value`}
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <Button
+                        onClick={() => removeAmenities(index)}
+                        variant="destructive"
+                        className="!bg-red-700"
+                        size="icon"
+                        type="button"
+                      >
+                        <Trash2 />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex justify-end mt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => appendAmenities({ value: "" })}
+                    className="flex items-center gap-2"
+                  >
+                    <Plus /> Add Excluded
+                  </Button>
+                </div>
+              </div>
+
+              <div className="border-t border-muted w-full "></div>
+
+              <div>
+                <FormLabel>TourPlan</FormLabel>
+
+                <div className="space-y-4 mt-4">
+                  {tourPlanFields.map((item, index) => (
+                    <div className="flex gap-2" key={item.id}>
+                      <FormField
+                        control={form.control}
+                        name={`tourPlan.${index}.value`}
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <Button
+                        onClick={() => removeTourPlan(index)}
+                        variant="destructive"
+                        className="!bg-red-700"
+                        size="icon"
+                        type="button"
+                      >
+                        <Trash2 />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex justify-end mt-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => appendTourPlan({ value: "" })}
                     className="flex items-center gap-2"
                   >
                     <Plus /> Add Excluded
