@@ -12,7 +12,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -255,9 +254,65 @@ export default function AddTour() {
               <div className="flex gap-5">
                 <FormField
                   control={form.control}
-                  name="division"
+                  name="location"
                   render={({ field }) => (
                     <FormItem className="flex-1">
+                      <FormLabel>Location</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="costFrom"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Cost</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex gap-5">
+                <FormField
+                  control={form.control}
+                  name="departureLocation"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Departure Location</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="arrivalLocation"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Arrival Location</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="flex gap-5">
+                <FormField
+                  control={form.control}
+                  name="division"
+                  render={({ field }) => (
+                    <FormItem className="flex-1 ">
                       <FormLabel>Division</FormLabel>
                       <Select
                         onValueChange={field.onChange}
@@ -266,9 +321,7 @@ export default function AddTour() {
                       >
                         <FormControl>
                           <SelectTrigger className="w-full">
-                            <SelectValue
-                            // placeholder="Select a verified email to display"
-                            />
+                            <SelectValue />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -295,7 +348,6 @@ export default function AddTour() {
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
-                        disabled={divisionLoading}
                       >
                         <FormControl>
                           <SelectTrigger className="w-full">
@@ -320,7 +372,34 @@ export default function AddTour() {
                   )}
                 />
               </div>
-
+              <div className="flex gap-5">
+                <FormField
+                  control={form.control}
+                  name="maxGuest"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Max Guest</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="minAge"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Minimum Age</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <div className="flex gap-5">
                 <FormField
                   control={form.control}
@@ -362,9 +441,6 @@ export default function AddTour() {
                           />
                         </PopoverContent>
                       </Popover>
-                      <FormDescription>
-                        Your date of birth is used to calculate your age.
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -409,9 +485,6 @@ export default function AddTour() {
                           />
                         </PopoverContent>
                       </Popover>
-                      <FormDescription>
-                        Your date of birth is used to calculate your age.
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
