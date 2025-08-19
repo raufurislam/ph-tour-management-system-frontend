@@ -6,8 +6,8 @@ export default function Tours() {
   const { data } = useGetAllToursQuery(undefined);
 
   return (
-    <div className="container mx-auto px-5 py-8 grid grid-cols-12 gap-5">
-      <div className="col-span-3 w-full h-[500px] border border-muted rounded-md overflow-y-auto"></div>
+    <div className="py-16 px-4 container mx-auto grid grid-cols-12 gap-5">
+      <div className="col-span-3 w-full h-[500px] border border-muted rounded-md "></div>
 
       <div className="col-span-9 w-full">
         {data?.map((item) => (
