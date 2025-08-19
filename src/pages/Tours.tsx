@@ -4,6 +4,7 @@ import { Link } from "react-router";
 
 export default function Tours() {
   const { data } = useGetAllToursQuery(undefined);
+  console.log("Inside all tour", data);
 
   return (
     <div className="py-16 px-4 container mx-auto grid grid-cols-12 gap-5">
