@@ -1,9 +1,32 @@
-import { ExternalLink } from "lucide-react";
 import Logo from "@/assets/icons/Logo";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
+import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useState } from "react";
 
 export default function HeroSection() {
+  const [selectedDivision, setSelectedDivision] = useState<string | undefined>(
+    undefined
+  );
+  const { data: divisionData, isLoading: divisionIsLoading } =
+    useGetDivisionsQuery(undefined);
+
+  const divisionOption = divisionData?.map(
+    (item: { _id: string; name: string }) => ({
+      label: item.name,
+      value: item._id,
+    })
+  );
+
   return (
     <section className="relative overflow-hidden py-32 min-h-screen">
       <div className="absolute inset-x-0 top-0 flex h-full w-full items-center justify-center opacity-100">
@@ -30,77 +53,33 @@ export default function HeroSection() {
                 consequatur. Explicabo.
               </p>
             </div>
-            <div className="mt-6">
-              <Button>
-                <Link
-                  className="flex justify-center items-center gap-2"
-                  to="/tours"
-                >
-                  Explore
-                  <ExternalLink className="h-4 transition-transform group-hover:translate-x-0.5" />
-                </Link>
-              </Button>
-            </div>
-            {/* <div className="mt-20 flex flex-col items-center gap-5">
-              <p className="font-medium text-muted-foreground lg:text-left">
-                Built with open-source technologies
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-4">
-                <a
-                  href="#"
-                  className={cn(
-                    buttonVariants({ variant: "outline" }),
-                    "group flex aspect-square h-12 items-center justify-center p-0"
-                  )}
-                >
-                  <img
-                    src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcn-ui-icon.svg"
-                    alt="shadcn/ui logo"
-                    className="h-6 saturate-0 transition-all group-hover:saturate-100"
-                  />
-                </a>
-                <a
-                  href="#"
-                  className={cn(
-                    buttonVariants({ variant: "outline" }),
-                    "group flex aspect-square h-12 items-center justify-center p-0"
-                  )}
-                >
-                  <img
-                    src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/typescript-icon.svg"
-                    alt="TypeScript logo"
-                    className="h-6 saturate-0 transition-all group-hover:saturate-100"
-                  />
-                </a>
+            <div className="mt-6 flex justify-center gap-3">
+              <Select onValueChange={(value) => setSelectedDivision(value)}>
+                <SelectTrigger className="w-[300px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Divisions</SelectLabel>
+                    {divisionOption?.map(
+                      (item: { value: string; label: string }) => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
 
-                <a
-                  href="#"
-                  className={cn(
-                    buttonVariants({ variant: "outline" }),
-                    "group flex aspect-square h-12 items-center justify-center p-0"
-                  )}
-                >
-                  <img
-                    src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/react-icon.svg"
-                    alt="React logo"
-                    className="h-6 saturate-0 transition-all group-hover:saturate-100"
-                  />
-                </a>
-                <a
-                  href="#"
-                  className={cn(
-                    buttonVariants({ variant: "outline" }),
-                    "group flex aspect-square h-12 items-center justify-center p-0"
-                  )}
-                >
-                  <img
-                    src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/tailwind-icon.svg"
-                    alt="Tailwind CSS logo"
-                    className="h-6 saturate-0 transition-all group-hover:saturate-100"
-                  />
-                </a>
-              </div>
-            </div> */}
+              {selectedDivision ? (
+                <Button asChild>
+                  <Link to={`/tours?division=${selectedDivision}`}>Search</Link>
+                </Button>
+              ) : (
+                <Button disabled>Search</Button>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -15,8 +15,6 @@ import { useSearchParams } from "react-router";
 
 export default function TourFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
-  console.log();
-  console.log();
 
   const selectedDivision = searchParams.get("division") || "";
   const selectedTourType = searchParams.get("tourType") || "";
