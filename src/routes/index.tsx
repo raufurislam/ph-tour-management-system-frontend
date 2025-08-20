@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
       },
       {
         Component: Bookings,
-        path: "booking",
+        path: "booking/:id",
       },
     ],
   },
