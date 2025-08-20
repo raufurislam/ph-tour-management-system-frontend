@@ -8,7 +8,7 @@ export default function TourDetails() {
   const { id } = useParams();
   const { data, isLoading } = useGetAllToursQuery({ _id: id });
 
-  console.log("Inside tour details", data);
+  // console.log("Inside tour details", data);
 
   const tourData = data?.[0];
 
