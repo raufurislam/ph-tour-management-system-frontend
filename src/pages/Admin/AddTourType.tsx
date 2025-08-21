@@ -12,7 +12,6 @@ import {
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -28,10 +27,11 @@ import { useState } from "react";
 
 export default function AddTourType() {
   const [currentPage, setCurrentPage] = useState(1);
-  // const [limit, setLimit] = useState(20);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [limit, setLimit] = useState(5);
   console.log(currentPage);
-  // const { data } = useGetTourTypesQuery({ page: currentPage, limit });
-  const { data } = useGetTourTypesQuery({ page: currentPage });
+  const { data } = useGetTourTypesQuery({ page: currentPage, limit });
+  // const { data } = useGetTourTypesQuery({ page: currentPage });
   const [removeTourType] = useRemoveTourTypeMutation();
 
   const handleRemoveTourType = async (tourId: string) => {
@@ -46,6 +46,9 @@ export default function AddTourType() {
       console.log(err);
     }
   };
+
+  const totalPage = data?.meta?.totalPage || 1;
+  console.log(totalPage);
 
   return (
     <div className="w-full max-w-7xl mx-auto px-5">
@@ -85,28 +88,48 @@ export default function AddTourType() {
           </TableBody>
         </Table>
       </div>
-      <div>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={() => setCurrentPage((prev) => prev - 1)}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext
-                onClick={() => setCurrentPage((prev) => prev + 1)}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+      {totalPage > 1 && (
+        <div className="flex justify-end mt-4">
+          <div>
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    onClick={() => setCurrentPage((prev) => prev - 1)}
+                    className={
+                      currentPage === 1
+                        ? "pointer-events-none opacity-50"
+                        : "cursor-pointer"
+                    }
+                  />
+                </PaginationItem>
+                {Array.from({ length: totalPage }, (_, index) => index + 1).map(
+                  (page) => (
+                    <PaginationItem
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                    >
+                      <PaginationLink isActive={currentPage === page}>
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  )
+                )}
+                <PaginationItem>
+                  <PaginationNext
+                    onClick={() => setCurrentPage((prev) => prev + 1)}
+                    className={
+                      currentPage === totalPage
+                        ? "pointer-events-none opacity-50"
+                        : "cursor-pointer"
+                    }
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
