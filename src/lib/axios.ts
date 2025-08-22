@@ -21,15 +21,27 @@ axiosInstance.interceptors.request.use(
 
 // Add a response interceptor
 axiosInstance.interceptors.response.use(
-  function onFulfilled(response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    // console.log("Axios", response);
+  (response) => {
+    console.log("Response Success");
     return response;
   },
-  function onRejected(error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
+  async (error) => {
+    console.log("Request failed", error.response);
+
+    if (
+      error.response.status === 500 &&
+      error.response.data.message === "jwt expired"
+    ) {
+      console.log("Your token is expired");
+
+      try {
+        const res = await axiosInstance.post("/auth/refresh-token");
+        console.log("New Token Arrived", res);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    // For everything
     return Promise.reject(error);
   }
 );
