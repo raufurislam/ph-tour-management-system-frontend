@@ -28,10 +28,9 @@ import { useState } from "react";
 export default function AddTourType() {
   const [currentPage, setCurrentPage] = useState(1);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [limit, setLimit] = useState(5);
-  console.log(currentPage);
+  const [limit, setLimit] = useState(10);
+
   const { data } = useGetTourTypesQuery({ page: currentPage, limit });
-  // const { data } = useGetTourTypesQuery({ page: currentPage });
   const [removeTourType] = useRemoveTourTypeMutation();
 
   const handleRemoveTourType = async (tourId: string) => {
@@ -43,48 +42,45 @@ export default function AddTourType() {
         toast.success("Removed", { id: toastId });
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
   const totalPage = data?.meta?.totalPage || 1;
-  console.log(totalPage);
+
+  //* Total page 2 => [0, 0]
 
   return (
     <div className="w-full max-w-7xl mx-auto px-5">
-      <div className="flex justify-between my-6">
-        <h1 className="text-xl font-semibold">Tour Type</h1>
+      <div className="flex justify-between my-8">
+        <h1 className="text-xl font-semibold">Tour Types</h1>
         <AddTourTypeModal />
       </div>
       <div className="border border-muted rounded-md">
         <Table>
           <TableHeader>
             <TableRow>
-              {/* <TableHead className="w-[100px]">Invoice</TableHead> */}
-              <TableHead className="w-28">Name</TableHead>
-              <TableHead>Action</TableHead>
+              <TableHead className="w-[100px]">Name</TableHead>
+              <TableHead className="text-right">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.data?.map(
-              (item: { _id: string; name: string }, index: number) => (
-                <TableRow key={index}>
-                  {/* <TableCell className="font-medium">INV001</TableCell> */}
-                  <TableCell className="font-medium w-full">
-                    {item.name}
-                  </TableCell>
-                  <TableCell>
-                    <DeleteConfirmation
-                      onConfirm={() => handleRemoveTourType(item._id)}
-                    >
-                      <Button size="sm">
-                        <Trash2></Trash2>
-                      </Button>
-                    </DeleteConfirmation>
-                  </TableCell>
-                </TableRow>
-              )
-            )}
+            {data?.data?.map((item: { _id: string; name: string }) => (
+              <TableRow>
+                <TableCell className="font-medium w-full">
+                  {item?.name}
+                </TableCell>
+                <TableCell>
+                  <DeleteConfirmation
+                    onConfirm={() => handleRemoveTourType(item._id)}
+                  >
+                    <Button size="sm">
+                      <Trash2 />
+                    </Button>
+                  </DeleteConfirmation>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </div>

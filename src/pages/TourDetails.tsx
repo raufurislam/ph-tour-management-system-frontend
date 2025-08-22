@@ -3,10 +3,22 @@ import { useGetAllToursQuery } from "@/redux/features/Tour/tour.api";
 import { format } from "date-fns"; // ✅ needed for date formatting
 import { Link, useParams } from "react-router";
 import LoadingPage from "./LoadingPage";
+import { useGetDivisionsQuery } from "@/redux/features/division/division.api";
 
 export default function TourDetails() {
   const { id } = useParams();
   const { data, isLoading } = useGetAllToursQuery({ _id: id });
+
+  const { data: divisionData } = useGetDivisionsQuery(
+    {
+      _id: data?.[0]?.division,
+      fields: "name",
+    },
+    {
+      skip: !data,
+    }
+  );
+  console.log(divisionData);
 
   // console.log("Inside tour details", data);
 
@@ -64,7 +76,7 @@ export default function TourDetails() {
               <strong>Arrival:</strong> {tourData?.arrivalLocation}
             </p>
             <p>
-              <strong>Division:</strong> {tourData?.division}
+              <strong>Division:</strong> {divisionData?.[0]?.name}
             </p>
             <p>
               <strong>Tour Type:</strong> {tourData?.tourType}

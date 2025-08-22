@@ -73,7 +73,11 @@ export default function AddTour() {
 
   const { data: divisionData, isLoading: divisionLoading } =
     useGetDivisionsQuery(undefined);
-  const { data: tourTypeData } = useGetTourTypesQuery(undefined);
+  // const { data: tourTypeData } = useGetTourTypesQuery(undefined);
+  const { data: tourTypeData } = useGetTourTypesQuery({
+    limit: 1000,
+    fields: "_id,name",
+  });
   const [addTour] = useAddTourMutation();
 
   const divisionOptions = divisionData?.map(
